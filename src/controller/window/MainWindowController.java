@@ -1,5 +1,6 @@
 package controller.window;
 
+import core.Item.ItemType;
 import core.MyImage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +22,7 @@ public class MainWindowController implements Initializable{
     private final MyImage DRINKS = new MyImage("/media/types/drinks.png", "Drinks");
     private final MyImage SANDWICHES = new MyImage("/media/types/sandwiches.png", "Sandwiches");
     private final MyImage DESSERTS = new MyImage("/media/types/desserts.png", "Desserts");
-    private final MyImage[] listOfImages = {SETS, DRINKS, SANDWICHES, DESSERTS};
+    //private final MyImage[] listOfImages = {SETS, DRINKS, SANDWICHES, DESSERTS};
 
     ObservableList<String> items = FXCollections.observableArrayList();
 
@@ -32,13 +33,24 @@ public class MainWindowController implements Initializable{
     private ListView<String> listView;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setListView();
+    public void initialize(URL url, ResourceBundle resourceBundle){
+        ItemType[] itemTypes = setItemTypes();
+        setListView(itemTypes);
     }
 
-    private void setListView(){
+    private ItemType[] setItemTypes(){
+        ItemType sets = new ItemType("Sets", "/media/types/sets.png");
+        ItemType drinks = new ItemType("Drinks", "/media/types/drinks.png");
+        ItemType sandwiches = new ItemType("Sandwiches", "/media/types/sandwiches.png");
+        ItemType desserts = new ItemType("Desserts", "/media/types/desserts.png");
+
+        ItemType[] itemTypes = {sets, drinks, sandwiches, desserts};
+        return itemTypes;
+    }
+
+    private void setListView(ItemType[] itemTypes){
         items.removeAll(items);
-        for(MyImage myImage : listOfImages) items.add(myImage.getImageName());
+        for(ItemType itemType : itemTypes) items.add(itemType.getItemTypeName());
 
         listView.getItems().addAll(items);
 
@@ -56,11 +68,11 @@ public class MainWindowController implements Initializable{
                     setStyle("-fx-background-color: #D3D3D3");
                 } else {
                     setStyle("-fx-background-color: #D3D3D3");
-                    for(int i = 0; i < listOfImages.length; i++){
-                        for(int j = 0; j < listOfImages.length; j++){
-                            if(name.equals(listOfImages[j].getImageName())){
-                                imageView.setImage(listOfImages[j].getImageObject());
-                                setText(listOfImages[j].getImageName());
+                    for(int i = 0; i < itemTypes.length; i++){
+                        for(int j = 0; j < itemTypes.length; j++){
+                            if(name.equals(itemTypes[j].getItemTypeName())){
+                                imageView.setImage(itemTypes[j].getItemTypeImage());
+                                setText(itemTypes[j].getItemTypeName());
                                 setGraphic(imageView);
                             }
                         }
