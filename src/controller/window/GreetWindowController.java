@@ -1,4 +1,4 @@
-package controller;
+package controller.window;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class greetWindowController {
+public class GreetWindowController {
 
     @FXML
     Button proceedButton;
@@ -19,7 +19,7 @@ public class greetWindowController {
     private void proceedClicked() throws IOException {
         Stage mainWindow = new Stage();
         Stage stage = (Stage) proceedButton.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/window/mainWindow.fxml"));
         Parent root = loader.load();
         mainWindow.setScene(new Scene(root, 1280, 720));
         mainWindow.initStyle(StageStyle.UNDECORATED);
