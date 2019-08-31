@@ -8,12 +8,16 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +29,9 @@ public class MainWindowController implements Initializable{
     ObservableList<String> items = FXCollections.observableArrayList();
 
     @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
     private GridPane centerPane;
 
     @FXML
@@ -32,6 +39,7 @@ public class MainWindowController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        scrollPane.setFitToWidth(true);
         itemTypes = setItemTypes();
         setListView(itemTypes);
     }
@@ -50,6 +58,13 @@ public class MainWindowController implements Initializable{
         sandwiches.addItem("Big Mac", "/media/sandwiches/bigmac.png")
                   .addItem("Mc Royal", "/media/sandwiches/mcroyal.png")
                   .addItem("Mc Chicken", "/media/sandwiches/mcchicken.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
                   .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
                   .addItem("Wieśmac", "/media/sandwiches/wiesmac.png");
 
@@ -95,15 +110,7 @@ public class MainWindowController implements Initializable{
 
     @FXML
     private void listViewClicked() {
-/*        if(!listView.getSelectionModel().isEmpty()){
-            StringBuilder builder = new StringBuilder();
-            builder.setLength(0);
-            builder.append("../../fxml/scene/").append(listView.getSelectionModel().getSelectedItem()).append("Scene.fxml");
-            GridPane centerPane = FXMLLoader.load(getClass().getResource(builder.toString()));
-            centerPane.getChildren().setAll(centerPane);
-            centerPane.prefWidthProperty().bind(centerPane.widthProperty());
-            centerPane.prefHeightProperty().bind(centerPane.heightProperty());
-        }*/
+
         if(!listView.getSelectionModel().isEmpty()){
             centerPane.getChildren().removeAll(centerPane.getChildren());
             for(ItemType itemType : itemTypes){
@@ -111,10 +118,18 @@ public class MainWindowController implements Initializable{
                     int i = 0;
                     int j = 0;
                     for(Item item : itemType.getItemList()){
+                        double parent_width = centerPane.getWidth();
+                        VBox vbox = new VBox();
+                        vbox.setMinWidth(parent_width/3);
+                        vbox.setPrefWidth(parent_width/3);
+                        vbox.setMinHeight(vbox.getPrefHeight());
                         ImageView imageView = new ImageView(item.getItemImage());
-                        imageView.fitWidthProperty().setValue(100);
-                        imageView.fitHeightProperty().setValue(100);
-                        centerPane.add(imageView, i, j);
+                        imageView.fitWidthProperty().setValue(200);
+                        imageView.fitHeightProperty().setValue(200);
+                        Label label = new Label(item.getItemName());
+                        vbox.getChildren().addAll(imageView, label);
+                        vbox.setAlignment(Pos.CENTER);
+                        centerPane.add(vbox, i, j);
                         if((++i % 4) == 3){
                             i = 0;
                             j++;
