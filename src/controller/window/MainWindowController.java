@@ -2,14 +2,12 @@ package controller.window;
 
 import core.Item.Item;
 import core.Item.ItemType;
-import core.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -40,19 +38,24 @@ public class MainWindowController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         itemTypes = setItemTypes();
         setListView(itemTypes);
     }
 
     private ItemType[] setItemTypes(){
         ItemType sets = new ItemType("Sets", "/media/types/sets.png");
+        sets.addItem("2 for U", "/media/sets/2foru.png")
+            .addItem("Happy Meal", "/media/sets/happymeal.png")
+            .addItem("Mc Set", "/media/sets/mczestaw.png");
 
         ItemType drinks = new ItemType("Drinks", "/media/types/drinks.png");
-        drinks.addItem("Coffee", "/media/drinks/coffee.png")
+        drinks.addItem("Kawa", "/media/drinks/coffee.png")
               .addItem("Cola", "/media/drinks/cola.png")
-              .addItem("Juice", "/media/drinks/juice.png")
+              .addItem("Sok", "/media/drinks/juice.png")
               .addItem("Shake", "/media/drinks/shake.png")
-              .addItem("Water", "/media/drinks/water.png");
+              .addItem("Woda", "/media/drinks/water.png");
 
         ItemType sandwiches = new ItemType("Sandwiches", "/media/types/sandwiches.png");
         sandwiches.addItem("Big Mac", "/media/sandwiches/bigmac.png")
@@ -69,6 +72,10 @@ public class MainWindowController implements Initializable{
                   .addItem("Wieśmac", "/media/sandwiches/wiesmac.png");
 
         ItemType desserts = new ItemType("Desserts", "/media/types/desserts.png");
+        desserts.addItem("Ciastko", "/media/desserts/ciastko.png")
+                .addItem("Jabłka i winogrona", "/media/desserts/jablka.png")
+                .addItem("Marchewki", "/media/desserts/marchewki.png")
+                .addItem("Mc Flurry", "/media/desserts/mcflurry.png");
 
         ItemType[] itemTypes = {sets, drinks, sandwiches, desserts};
         return itemTypes;
@@ -129,6 +136,12 @@ public class MainWindowController implements Initializable{
                         Label label = new Label(item.getItemName());
                         vbox.getChildren().addAll(imageView, label);
                         vbox.setAlignment(Pos.CENTER);
+                        vbox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent mouseEvent) {
+                                gridPaneClicked(item);
+                            }
+                        });
                         centerPane.add(vbox, i, j);
                         if((++i % 4) == 3){
                             i = 0;
@@ -141,8 +154,7 @@ public class MainWindowController implements Initializable{
         }
     }
 
-    @FXML
-    private void gridPaneClicked(){
-        //System.out.println()
+    private void gridPaneClicked(Item item){
+        System.out.println(item.getItemName());
     }
 }

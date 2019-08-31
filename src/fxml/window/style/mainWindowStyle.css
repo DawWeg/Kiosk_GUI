@@ -1,3 +1,8 @@
 #listView {
     -fx-background-color: #D3D3D3;
 }
+
+.root {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
