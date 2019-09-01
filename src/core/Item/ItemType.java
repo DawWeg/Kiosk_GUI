@@ -29,8 +29,8 @@ public class ItemType {
         return itemTypeName;
     }
 
-    public ItemType addItem(String itemName, String imageURL){
-        Item item = new Item(itemName, imageURL);
+    public ItemType addItem(String itemName, double itemPrice, String imageURL){
+        Item item = new Item(itemName, itemPrice, imageURL);
         items.add(item);
         return this;
     }

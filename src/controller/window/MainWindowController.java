@@ -4,19 +4,24 @@ import core.Item.Item;
 import core.Item.ItemType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,36 +51,36 @@ public class MainWindowController implements Initializable{
 
     private ItemType[] setItemTypes(){
         ItemType sets = new ItemType("Sets", "/media/types/sets.png");
-        sets.addItem("2 for U", "/media/sets/2foru.png")
-            .addItem("Happy Meal", "/media/sets/happymeal.png")
-            .addItem("Mc Set", "/media/sets/mczestaw.png");
+        sets.addItem("2 for U", 10.0, "/media/sets/2foru.png")
+            .addItem("Happy Meal",  11.0, "/media/sets/happymeal.png")
+            .addItem("Mc Set", 12.0, "/media/sets/mczestaw.png");
 
         ItemType drinks = new ItemType("Drinks", "/media/types/drinks.png");
-        drinks.addItem("Kawa", "/media/drinks/coffee.png")
-              .addItem("Cola", "/media/drinks/cola.png")
-              .addItem("Sok", "/media/drinks/juice.png")
-              .addItem("Shake", "/media/drinks/shake.png")
-              .addItem("Woda", "/media/drinks/water.png");
+        drinks.addItem("Kawa", 1.0, "/media/drinks/coffee.png")
+              .addItem("Cola", 2.0, "/media/drinks/cola.png")
+              .addItem("Sok", 3.0, "/media/drinks/juice.png")
+              .addItem("Shake", 4.0, "/media/drinks/shake.png")
+              .addItem("Woda", 5.0, "/media/drinks/water.png");
 
         ItemType sandwiches = new ItemType("Sandwiches", "/media/types/sandwiches.png");
-        sandwiches.addItem("Big Mac", "/media/sandwiches/bigmac.png")
-                  .addItem("Mc Royal", "/media/sandwiches/mcroyal.png")
-                  .addItem("Mc Chicken", "/media/sandwiches/mcchicken.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Mc Double", "/media/sandwiches/mcdouble.png")
-                  .addItem("Wieśmac", "/media/sandwiches/wiesmac.png");
+        sandwiches.addItem("Big Mac", 6.0, "/media/sandwiches/bigmac.png")
+                  .addItem("Mc Royal", 7.0, "/media/sandwiches/mcroyal.png")
+                  .addItem("Mc Chicken", 8.0, "/media/sandwiches/mcchicken.png")
+                  .addItem("Mc Double", 9.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 10.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 11.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 12.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 13.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 14.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 15.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Mc Double", 16.0, "/media/sandwiches/mcdouble.png")
+                  .addItem("Wieśmac", 17.0, "/media/sandwiches/wiesmac.png");
 
         ItemType desserts = new ItemType("Desserts", "/media/types/desserts.png");
-        desserts.addItem("Ciastko", "/media/desserts/ciastko.png")
-                .addItem("Jabłka i winogrona", "/media/desserts/jablka.png")
-                .addItem("Marchewki", "/media/desserts/marchewki.png")
-                .addItem("Mc Flurry", "/media/desserts/mcflurry.png");
+        desserts.addItem("Ciastko", 18.0, "/media/desserts/ciastko.png")
+                .addItem("Jabłka i winogrona", 19.0, "/media/desserts/jablka.png")
+                .addItem("Marchewki", 20.0, "/media/desserts/marchewki.png")
+                .addItem("Mc Flurry", 21.0, "/media/desserts/mcflurry.png");
 
         ItemType[] itemTypes = {sets, drinks, sandwiches, desserts};
         return itemTypes;
@@ -86,7 +91,6 @@ public class MainWindowController implements Initializable{
         for(ItemType itemType : itemTypes) items.add(itemType.getItemTypeName());
 
         listView.getItems().addAll(items);
-
         listView.setCellFactory(param -> new ListCell<>(){
             private ImageView imageView = new ImageView();
             @Override
@@ -136,10 +140,11 @@ public class MainWindowController implements Initializable{
                         Label label = new Label(item.getItemName());
                         vbox.getChildren().addAll(imageView, label);
                         vbox.setAlignment(Pos.CENTER);
-                        vbox.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent mouseEvent) {
+                        vbox.setOnMouseClicked(mouseEvent -> {
+                            try {
                                 gridPaneClicked(item);
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         });
                         centerPane.add(vbox, i, j);
@@ -154,7 +159,16 @@ public class MainWindowController implements Initializable{
         }
     }
 
-    private void gridPaneClicked(Item item){
-        System.out.println(item.getItemName());
+    private void gridPaneClicked(Item item) throws IOException {
+        Stage itemWindow = new Stage();
+        itemWindow.initModality(Modality.APPLICATION_MODAL);
+        itemWindow.initStyle(StageStyle.UNDECORATED);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/window/itemWindow.fxml"));
+        Parent root = loader.load();
+        ItemWindowController itemWindowController = loader.getController();
+        itemWindow.setScene(new Scene(root, 350, 250));
+        itemWindowController.setup(item);
+        itemWindow.showAndWait();
+
     }
 }
